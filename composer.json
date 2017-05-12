@@ -1,0 +1,20 @@
+{
+    "name": "carawebs/wp-cw-contact-form",
+    "description": "Simple Email Contact Form for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Egan",
+            "email": "david@carawebs.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Carawebs\\ContactForm\\": "src"
+        }
+    },
+    "require": {
+        "carawebs/wp-plugin-settings": "^1.0"
+    }
+}
