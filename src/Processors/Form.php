@@ -15,9 +15,6 @@ class Form extends BaseForm
     {
         $this->add_js();
         $this->set_nonce_values('contact_form', 'ensure_contact_form_safety');
-        $this->init();
-        $this->contact_form();
-        var_dump($this);
     }
 
     public function display()
@@ -37,7 +34,7 @@ class Form extends BaseForm
         return $display;
     }
 
-    public function init()
+    public function processSubmittedForm()
     {
         add_action('wp', function() {
 
@@ -58,11 +55,16 @@ class Form extends BaseForm
             }
             $sane = $this->sanitize($_POST);
             $IP = $_SERVER['REMOTE_ADDR'];
-            $to = 'XXXX@example.com';
-            $subject = 'FROM CONFIG';
+            $to = $this->messageConfig['email'];
+            $subject = $this->messageConfig['subject'];
             $body = $this->message($sane, $IP);
             $headers = ['Content-Type: text/html; charset=UTF-8'];
-            $headers[] = 'From: CONFIG <XXXX@example.com>';
+            $headers[] = 'From: ' . $this->messageConfig['header-from'] . ' <'. $this->messageConfig['email'] . '>';
+            $log = [];
+            $log['sanitized_data'] = $sane;
+            $log['headers'] = $headers;
+            $log['body'] = $body;
+            file_put_contents(dirname(__FILE__, 3). '/maillog', json_encode($log, JSON_PRETTY_PRINT));
             wp_mail($to, $subject, $body, $headers);
             wp_redirect(home_url('/thank-you') . '?firstname=' . $sane['first_name']);
             exit;
@@ -105,7 +107,7 @@ class Form extends BaseForm
         return ob_get_clean();
     }
 
-    public function contact_form()
+    public function outputContactForm()
     {
         add_action('carawebs\email-contact-form', function() {
             $budget_options = [

@@ -84,4 +84,10 @@ abstract class BaseForm {
             echo ob_get_clean();
         });
     }
+
+    public function setMessageConfig($config)
+    {
+        $this->messageConfig = $config;
+        //die(var_dump($this->config));
+    }
 }
