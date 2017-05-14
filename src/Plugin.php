@@ -34,13 +34,13 @@ class Plugin
     }
 
     public function bootstrap(
-        Settings\SettingsController $optionsPage,
-        RegisterShortcodes $shortcodes,
+        /*Settings\SettingsController $optionsPage,*/
+        /*RegisterShortcodes $shortcodes,*/
         MessageConfig $messageConfig,
         Form $contactForm
         )
     {
-        $optionsPage->setOptionsPageArgs($this->optionsConfig)->initOptionsPage();
+        //$optionsPage->setOptionsPageArgs($this->optionsConfig)->initOptionsPage();
         $contactForm->setMessageConfig($messageConfig);
         $contactForm->processSubmittedForm();
         $contactForm->outputContactForm();
@@ -70,25 +70,25 @@ class Plugin
             flush_rewrite_rules();
         });
     }
-    /**
-    * Load Composer autoload if available, otherwise register a simple autoload callback.
-    *
-    * @return void
-    */
-    public function autoload()
-    {
-        static $done;
-        // Go ahead if $done == NULL or the class doesn't exist
-        if ( !$done && !class_exists( 'Carawebs\CustomContent\Config\Fields', true ) ) {
-            $done = true;
-            file_exists( __DIR__.'/vendor/autoload.php' )
-            ? require_once __DIR__.'/vendor/autoload.php'
-            : spl_autoload_register( function ( $class ) {
-                if (strpos($class, __NAMESPACE__) === 0) {
-                    $name = str_replace('\\', '/', substr($class, strlen(__NAMESPACE__)));
-                    require_once __DIR__."/src{$name}.php";
-                }
-            });
-        }
-    }
+    // /**
+    // * Load Composer autoload if available, otherwise register a simple autoload callback.
+    // *
+    // * @return void
+    // */
+    // public function autoload()
+    // {
+    //     static $done;
+    //     // Go ahead if $done == NULL or the class doesn't exist
+    //     if ( !$done && !class_exists( 'Carawebs\CustomContent\Config\Fields', true ) ) {
+    //         $done = true;
+    //         file_exists( __DIR__.'/vendor/autoload.php' )
+    //         ? require_once __DIR__.'/vendor/autoload.php'
+    //         : spl_autoload_register( function ( $class ) {
+    //             if (strpos($class, __NAMESPACE__) === 0) {
+    //                 $name = str_replace('\\', '/', substr($class, strlen(__NAMESPACE__)));
+    //                 require_once __DIR__."/src{$name}.php";
+    //             }
+    //         });
+    //     }
+    // }
 }

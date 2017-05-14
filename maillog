@@ -1,15 +1,15 @@
 {
     "sanitized_data": {
-        "first_name": "David",
-        "last_name": "Egan",
+        "first_name": "Test",
+        "last_name": "Smith",
         "email": "david@carawebs.com",
-        "phone_number": "11111",
-        "message_from_lead": "Test interface",
-        "budget_selector": "\u20ac50K - \u20ac100K"
+        "phone_number": "2222222",
+        "message_from_lead": "Your Message",
+        "budget_selector": "\u20ac10K - \u20ac25K"
     },
     "headers": [
         "Content-Type: text\/html; charset=UTF-8",
         "From: Get it Right Initiative <info@carawebs.com>"
     ],
-    "body": "        <h1>Form Submission from http:\/\/giri.dev\/<\/h1>\n        <p>Message from David Egan.<\/p>\n        <p>Email: <a href=\"mailto:david@carawebs.com\">david@carawebs.com<\/a><\/p>\n        <p>IP Address: 127.0.0.1<\/p>\n        <p>Phone: 11111<\/p>\n        <p>Budget: \u20ac50K - \u20ac100K<\/p>\n        <h2>Message from Lead<\/h2>\n        <p>Test interface<\/p>\n        "
+    "body": "        <h1>Form Submission from http:\/\/giri.dev\/<\/h1>\n        <p>Message from Test Smith.<\/p>\n        <p>Email: <a href=\"mailto:david@carawebs.com\">david@carawebs.com<\/a><\/p>\n        <p>IP Address: 127.0.0.1<\/p>\n        <p>Phone: 2222222<\/p>\n        <p>Budget: \u20ac10K - \u20ac25K<\/p>\n        <h2>Message from Lead<\/h2>\n        <p>Your Message<\/p>\n        "
 }
