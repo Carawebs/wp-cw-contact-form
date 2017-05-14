@@ -16,20 +16,20 @@ namespace Carawebs\ContactForm;
 use Carawebs\Settings;
 use DI\ContainerBuilder;
 use Carawebs\ContactForm\Processors\Form;
+use Carawebs\ContactForm\Config\FileMessageConfig;
 use Carawebs\ContactForm\Shortcodes\RegisterShortcodes;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $basePath = dirname(__FILE__);
+$settingsController = new Settings\SettingsController;
+$registerShortcodes = new RegisterShortcodes;
+$messageConfig = new FileMessageConfig($basePath . '/config/message.php');
+$form = new Form;
 
 include __DIR__ . '/src/Plugin.php';
-$container = include __DIR__ . '/src/Container/bootstrap.php';
 
 $plugin = Plugin::getInstance();
 $plugin->autoload();
 $plugin->setPaths($basePath);
-$plugin->bootstrap(
-    new Settings\SettingsController,
-    new RegisterShortcodes,
-    new Form
-);
+$plugin->bootstrap($settingsController, $registerShortcodes, $messageConfig, $form);

@@ -3,6 +3,7 @@ namespace Carawebs\ContactForm;
 
 use Carawebs\Settings;
 use Carawebs\ContactForm\Processors\Form;
+use Carawebs\ContactForm\Config\MessageConfig;
 use Carawebs\ContactForm\Config\FileMessageConfig;
 use Carawebs\ContactForm\Shortcodes\RegisterShortcodes;
 
@@ -32,10 +33,15 @@ class Plugin
          return self::$instance;
     }
 
-    public function bootstrap(Settings\SettingsController $optionsPage, RegisterShortcodes $shortcodes = NULL, Form $contactForm)
+    public function bootstrap(
+        Settings\SettingsController $optionsPage,
+        RegisterShortcodes $shortcodes,
+        MessageConfig $messageConfig,
+        Form $contactForm
+        )
     {
         $optionsPage->setOptionsPageArgs($this->optionsConfig)->initOptionsPage();
-        $contactForm->setMessageConfig(new FileMessageConfig($this->fileMessageConfig));
+        $contactForm->setMessageConfig($messageConfig);
         $contactForm->processSubmittedForm();
         $contactForm->outputContactForm();
     }
@@ -48,7 +54,6 @@ class Plugin
         $path = $basePath . '/config/';
         $this->optionsConfig = $path . 'options-page.php';
         $this->formConfig = $path . 'form-fields.php';
-        $this->fileMessageConfig = $path . 'message.php';
     }
 
     private function onActivation()
