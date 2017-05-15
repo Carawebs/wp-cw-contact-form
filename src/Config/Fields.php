@@ -4,7 +4,7 @@ namespace Carawebs\ContactForm\Config;
 /**
 *
 */
-class Fields extends Base
+class Fields extends BaseArrayAccess
 {
     public function __construct()
     {

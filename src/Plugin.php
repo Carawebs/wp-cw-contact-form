@@ -7,6 +7,7 @@ use Carawebs\ContactForm\Config\MessageConfig;
 use Carawebs\ContactForm\FormHandling\Processor;
 use Carawebs\ContactForm\Config\FileMessageConfig;
 use Carawebs\ContactForm\Config\BaseFormValues;
+use Carawebs\ContactForm\Config\FileFormFieldsConfig;
 use Carawebs\ContactForm\Shortcodes\RegisterShortcodes;
 use Carawebs\ContactForm\Config\FileAllowedLocationsConfig;
 
@@ -37,7 +38,8 @@ class Plugin
             $this->registerShortcodes = new RegisterShortcodes;
             $this->messageConfig = new FileMessageConfig($this->basePath . '/config/message.php');
             $this->allowedLocationsConfig = new FileAllowedLocationsConfig($this->basePath . '/config/allowed-locations.php');
-            $this->contactForm = new Form($baseFormValues);
+            $this->formFieldsConfig = new FileFormFieldsConfig($this->basePath . '/config/form-fields.php');
+            $this->contactForm = new Form($baseFormValues, $this->formFieldsConfig);
             $this->formProcessor = new Processor($baseFormValues);
             $this->autoloader = new Autoloader;
             $this->settingsConfigFilePath = $this->basePath . '/config/options-page.php';

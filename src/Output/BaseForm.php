@@ -6,31 +6,73 @@ namespace Carawebs\ContactForm\Output;
 */
 abstract class BaseForm {
 
-    protected $nonce_name;
-
-    protected $nonce_action;
-
-    // public function nonce($args)
-    // {
-    //     $action = $args['action'] ?? NULL;
-    //     $name = $args['name'] ?? NULL;
-    //     $referer = $args['referer'] ?? true;
-    //     return wp_nonce_field( $action, $name, $referer, false);
-    // }
-
-    // public function check_nonce($nonce, $nonce_action)
-    // {
-    //     $result = wp_verify_nonce( $nonce, $nonce_action );
-    //     if ( 1 === $result ) {
-    //         return true; // Return true if the nonce is less than one day old
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    public function sanitize($value)
+    public function buildFields()
     {
-        return sanitize_text_field( $value );
+        $this->fieldsMarkupArray = [];
+        foreach ($this->formFields->container as $key => $args) {
+            switch ($args['type']) {
+                case 'text':
+                $this->fieldsMarkupArray[] = $this->text($args);
+                break;
+                case 'textarea':
+                $this->fieldsMarkupArray[] = $this->textarea($args);
+                break;
+                case 'radio':
+                $this->fieldsMarkupArray[] = $this->radios($args);
+                break;
+                default:
+                # code...
+                break;
+            }
+        }
+    }
+
+    public function text($args)
+    {
+        $placeholder = !empty($args['placeholder']) ? ' placeholder="' . $args['placeholder'] . '"' : NULL;
+        $required = !empty($args['required']) ? ' required' : NULL;
+        ob_start();
+        ?>
+        <input name="<?= $args['name']; ?>"<?= $placeholder; ?>" class="form-control<?= $required; ?>"<?=$required; ?> type="text">
+        <?php
+        return ob_get_clean();
+    }
+
+    public function textarea($args)
+    {
+        $rows = !empty($args['rows']) ? $args['rows'] : '5';
+        $placeholder = !empty($args['placeholder']) ? $args['placeholder'] : NULL;
+
+        ob_start();
+        ?>
+        <textarea class="form-control" id="textarea" name="<?= $args['name']; ?>" rows="<?= $rows; ?>"><?= $placeholder; ?></textarea>
+        <?php
+        return ob_get_clean();
+    }
+
+    public function radios($args)
+    {
+
+        ob_start();
+        $i = 0;
+        foreach ($args['options'] as $value => $displayValue) {
+            ?>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" name="<?= $args['name']; ?>" id="<?= $this->id($args['name'], $i); ?>" value="<?= $value; ?>" type="radio">
+                    <?= $displayValue; ?>
+                </label>
+            </div>
+            <?php
+            $i++;
+        }
+        return ob_get_clean();
+    }
+
+    public function id($name, $i)
+    {
+        $str = strtolower(trim($name));
+        return str_replace('_', '-', $str) . '-' . $i;
     }
 
     public function add_js()
@@ -64,12 +106,6 @@ abstract class BaseForm {
             echo ob_get_clean();
         });
     }
-
-    // public function setMessageConfig($config)
-    // {
-    //     $this->messageConfig = $config;
-    //     //die(var_dump($this->config));
-    // }
 
     public function setAllowed($value)
     {

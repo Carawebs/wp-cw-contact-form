@@ -3,6 +3,7 @@ namespace Carawebs\ContactForm\Output;
 
 use Carawebs\ContactForm\Config\BaseFormValues;
 use Carawebs\ContactForm\Traits\PartialSelector;
+use Carawebs\ContactForm\Config\FileFormFieldsConfig;
 /**
 *
 */
@@ -12,9 +13,11 @@ class Form extends BaseForm
 
     protected $honeypot_name = 'checker';
 
-    function __construct(BaseFormValues $baseFormValues)
+    function __construct(BaseFormValues $baseFormValues, FileFormFieldsConfig $formFieldsConfig)
     {
         $this->baseFormValues = $baseFormValues;
+        $this->formFields = $formFieldsConfig;
+        $this->buildFields();
         $this->add_js();
     }
 
@@ -36,6 +39,9 @@ class Form extends BaseForm
             $nonce = $this->baseFormValues->getNonce();
             $honeypot = $this->baseFormValues->getHoneypot();
             ob_start();
+            foreach ($this->fieldsMarkupArray as $key => $value) {
+                echo "<div class='form-group'>$value</div>";
+            }
             include($this->static_partial_selector('partials/forms/contact-form'));
             echo ob_get_clean();
         });

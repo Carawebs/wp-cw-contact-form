@@ -3,7 +3,7 @@ namespace Carawebs\ContactForm\Config;
 
 /**
 * An object that holds form data required by both the form output and the form
-* processor.
+* processor: Nonce data and honeypot.
 */
 class BaseFormValues
 {
