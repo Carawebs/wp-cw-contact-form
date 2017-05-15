@@ -2,8 +2,8 @@
 
 ?>
 <form class="form-horizontal" onsubmit="return validateMyForm();" action="<?= $post_to_url ?? NULL; ?>" method="POST">
-    <?= ! empty($nonce) ? $nonce : NULL; ?>
-    <?= ! empty($honeypot) ? $honeypot : NULL; ?>
+    <?= !empty($nonce) ? $nonce : NULL; ?>
+    <?= !empty($honeypot) ? $honeypot : NULL; ?>
     <fieldset>
         <div class="form-group">
             <input name="first_name" placeholder="First Name (required)" type="text" class="form-control required" required>

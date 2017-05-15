@@ -4,7 +4,7 @@ namespace Carawebs\ContactForm\Config;
 /**
 *
 */
-abstract class Base implements \ArrayAccess
+abstract class BaseArrayAccess implements \ArrayAccess
 {
     public function offsetExists ($offset) {
         return isset($this->container[$offset]);

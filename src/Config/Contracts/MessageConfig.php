@@ -1,5 +1,5 @@
 <?php
-namespace Carawebs\ContactForm\Config;
+namespace Carawebs\ContactForm\Config\Contracts;
 
 /**
 *

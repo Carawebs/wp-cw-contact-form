@@ -1,11 +1,11 @@
 <?php
 namespace Carawebs\ContactForm\Config;
 
-use Carawebs\ContactForm\Config\Contracts\MessageConfig;
+use Carawebs\ContactForm\Config\Contracts\AllowedLocationsConfig;
 /**
  *
  */
-class FileMessageConfig extends BaseArrayAccess implements MessageConfig
+class FileAllowedLocationsConfig extends BaseArrayAccess implements AllowedLocationsConfig
 {
     /**
      * Path to the config file.
@@ -21,8 +21,10 @@ class FileMessageConfig extends BaseArrayAccess implements MessageConfig
         $this->container = include($configFile);
     }
 
-    public function getSentToEmailAddress()
+    public function allowed()
     {
-        return $this->config['email'];
+        static $allowed;
+        isset($allowed) || $allowed = in_array(true, $this->container);
+        return $allowed;
     }
 }
