@@ -2,11 +2,13 @@
 namespace Carawebs\ContactForm;
 
 use Carawebs\Settings;
-use Carawebs\ContactForm\Output\Form;
+use Carawebs\ContactForm\Form\Processor;
+use Carawebs\ContactForm\Scripts\Footer;
+use Carawebs\ContactForm\Form\FormOutput;
 use Carawebs\ContactForm\Config\MessageConfig;
-use Carawebs\ContactForm\FormHandling\Processor;
-use Carawebs\ContactForm\Config\FileMessageConfig;
 use Carawebs\ContactForm\Config\BaseFormValues;
+use Carawebs\ContactForm\Form\Fields\FieldBuilder;
+use Carawebs\ContactForm\Config\FileMessageConfig;
 use Carawebs\ContactForm\Config\FileFormFieldsConfig;
 use Carawebs\ContactForm\Shortcodes\RegisterShortcodes;
 use Carawebs\ContactForm\Config\FileAllowedLocationsConfig;
@@ -39,10 +41,13 @@ class Plugin
             $this->messageConfig = new FileMessageConfig($this->basePath . '/config/message.php');
             $this->allowedLocationsConfig = new FileAllowedLocationsConfig($this->basePath . '/config/allowed-locations.php');
             $this->formFieldsConfig = new FileFormFieldsConfig($this->basePath . '/config/form-fields.php');
-            $this->contactForm = new Form($baseFormValues, $this->formFieldsConfig);
-            $this->formProcessor = new Processor($baseFormValues);
+            // An array of field data
+            $this->formFieldsData = new FieldBuilder($this->formFieldsConfig);
+            $this->contactForm = new FormOutput($baseFormValues, $this->formFieldsData);
+            $this->formProcessor = new Processor($baseFormValues, $this->formFieldsData);
             $this->autoloader = new Autoloader;
             $this->settingsConfigFilePath = $this->basePath . '/config/options-page.php';
+            $this->footerScripts = new Footer($baseFormValues);
         });
     }
 
@@ -58,6 +63,9 @@ class Plugin
             $this->contactForm->outputContactForm();
             $this->onActivation();
             $this->onDeactivation();
+        });
+        add_action('wp_footer', function() {
+            $this->footerScripts->honeypot;
         });
     }
 

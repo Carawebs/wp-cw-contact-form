@@ -1,18 +1,23 @@
 <?php
-namespace Carawebs\ContactForm\FormHandling;
+namespace Carawebs\ContactForm\Form;
 
 use Carawebs\ContactForm\Config\BaseFormValues;
+use Carawebs\ContactForm\Form\Fields\FieldBuilder;
+
 /**
 *
 */
 class Processor
 {
-    public function __construct(BaseFormValues $baseFormValues)
+    public function __construct(BaseFormValues $baseFormValues, FieldBuilder $formFields)
     {
         $this->honeypotName = $baseFormValues->getHoneypotName();
         $this->nonceName = $baseFormValues->getNonceName();
         $this->nonceAction = $baseFormValues->getNonceAction();
+        $this->formFields = $formFields->getFieldsData();
+        // die(var_dump($this->formFields));
     }
+
     public function processSubmittedForm($allowed)
     {
         if (false === $allowed) {
@@ -27,6 +32,20 @@ class Processor
         if (false === $this->checkNonce($_POST[$this->nonceName], $this->nonceAction)) {
             return;
         }
+
+        // Loop through $_POST data
+        $a = [];
+        foreach ($_POST as $name => $value) {
+            if (!in_array($name, array_keys($this->formFields->container))) continue;
+            $a[$name] = $value;
+        }
+
+        die(var_dump($a));
+        // Check for our fields
+        //
+        // Check for validity of each field, build error report
+        //
+        // If validity check fails, send back to the form with notification
 
         $sane = $this->sanitize($_POST);
         $IP = $_SERVER['REMOTE_ADDR'];
