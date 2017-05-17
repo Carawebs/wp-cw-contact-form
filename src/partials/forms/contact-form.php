@@ -1,7 +1,7 @@
 <?php
-
+// onsubmit="return validateMyForm();"
 ?>
-<form class="form-horizontal" onsubmit="return validateMyForm();" action="<?= $post_to_url ?? NULL; ?>" method="POST">
+<form class="form-horizontal" action="<?= $postToUrl ?? NULL; ?>" method="POST">
     <?= !empty($nonce) ? $nonce : NULL; ?>
     <?= !empty($honeypot) ? $honeypot : NULL; ?>
     <fieldset>

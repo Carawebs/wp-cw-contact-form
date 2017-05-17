@@ -7,61 +7,72 @@ use Carawebs\ContactForm\Form\Fields\FieldBuilder;
 /**
 *
 */
-class Processor
+class Processor extends Validator
 {
     public function __construct(BaseFormValues $baseFormValues, FieldBuilder $formFields)
     {
         $this->honeypotName = $baseFormValues->getHoneypotName();
         $this->nonceName = $baseFormValues->getNonceName();
         $this->nonceAction = $baseFormValues->getNonceAction();
-        $this->formFields = $formFields->getFieldsData();
-        // die(var_dump($this->formFields));
+        $this->formFields = $formFields->getFieldsData()->container;
+        $this->logger('NEW');
     }
 
     public function processSubmittedForm($allowed)
     {
+        $this->logger('PROCESSOR');
         if (false === $allowed) {
+            $status = (false === $allowed) ? "FALSE" : "TRUE";
+            $this->logger("ALLOWED: " . $status);
             return;
         }
         if (empty($_POST['submit']) or 'Submit Form' != $_POST['submit']) {
+            $this->logger('NOT SUBMITTED');
             return;
         }
+        $this->logger('After submit');
         if (!empty($_POST[$this->honeypotName])) {
+            $_SESSION['formErrors'][] = 'Problem with honeypot';
+            $this->logger('honeypot');
             return;
         }
         if (false === $this->checkNonce($_POST[$this->nonceName], $this->nonceAction)) {
+            $_SESSION['formErrors'][] = 'Problem with nonce';
+            $this->logger('nonce');
             return;
         }
+        $this->logger('processing');
 
-        // Loop through $_POST data
-        $a = [];
-        foreach ($_POST as $name => $value) {
-            if (!in_array($name, array_keys($this->formFields->container))) continue;
-            $a[$name] = $value;
-        }
-
-        die(var_dump($a));
         // Check for our fields
         //
         // Check for validity of each field, build error report
         //
         // If validity check fails, send back to the form with notification
 
-        $sane = $this->sanitize($_POST);
-        $IP = $_SERVER['REMOTE_ADDR'];
-        $to = $this->messageConfig['email'];
-        $subject = $this->messageConfig['subject'];
-        $body = $this->message($sane, $IP);
-        $headers = ['Content-Type: text/html; charset=UTF-8'];
-        $headers[] = 'From: ' . $this->messageConfig['header-from'] . ' <'. $this->messageConfig['email'] . '>';
-        $log = [];
-        $log['sanitized_data'] = $sane;
-        $log['headers'] = $headers;
-        $log['body'] = $body;
-        file_put_contents(dirname(__FILE__, 3). '/maillog', json_encode($log, JSON_PRETTY_PRINT));
-        wp_mail($to, $subject, $body, $headers);
-        wp_redirect(home_url('/thank-you') . '?firstname=' . $sane['first_name']);
+        // $sane = $this->sanitize($_POST);
+        // $IP = $_SERVER['REMOTE_ADDR'];
+        // $to = $this->messageConfig['email'];
+        // $subject = $this->messageConfig['subject'];
+        // $body = "Hello"; //$this->message($sane, $IP);
+        // $headers = ['Content-Type: text/html; charset=UTF-8'];
+        // $headers[] = 'From: ' . $this->messageConfig['header-from'] . ' <'. $this->messageConfig['email'] . '>';
+        // $log = [];
+        // $log['sanitized_data'] = $sane;
+        // $log['headers'] = $headers;
+        // $log['body'] = $body;
+        // file_put_contents(dirname(__FILE__, 3). '/maillog', json_encode($log, JSON_PRETTY_PRINT));
+        // wp_mail($to, $subject, $body, $headers);
+        // wp_redirect(home_url('/thank-you') . '?firstname=' . $sane['first_name']);
+        die(var_dump($_POST));
         exit;
+    }
+
+    public function logger($value)
+    {
+        $file = dirname(__FILE__, 3) . '/log';
+        $current = file_get_contents($file);
+        $current .= date("H:i:s") . ": " . json_encode($value, JSON_PRETTY_PRINT) . "\n";
+        file_put_contents($file, $current);
     }
 
     public function sanitize($post_array)

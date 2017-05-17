@@ -65,7 +65,7 @@ class Plugin
             $this->onDeactivation();
         });
         add_action('wp_footer', function() {
-            $this->footerScripts->honeypot;
+            $this->footerScripts->honeypot($this->allowedLocationsConfig->allowed());
         });
     }
 

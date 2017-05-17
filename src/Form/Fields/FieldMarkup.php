@@ -2,8 +2,8 @@
 namespace Carawebs\ContactForm\Form\Fields;
 
 /**
- * Markup for individual fields.
- */
+* Markup for individual fields.
+*/
 abstract class FieldMarkup
 {
 
@@ -11,9 +11,13 @@ abstract class FieldMarkup
     {
         $placeholder = !empty($args['placeholder']) ? ' placeholder="' . $args['placeholder'] . '"' : NULL;
         $required = !empty($args['required']) ? ' required' : NULL;
+        $label = !empty($args['label']) ? $args['label'] : NULL;
         ob_start();
         ?>
-        <input name="<?= $args['name']; ?>"<?= $placeholder; ?>" class="form-control<?= $required; ?>"<?=$required; ?> type="text">
+        <?php if(!empty($label)) : ?>
+            <label for="<?= $args['name']; ?>"><?= $label; ?></label>
+        <?php endif; ?>
+        <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>"<?= $placeholder; ?>" class="form-control<?= $required; ?>"<?=$required; ?> type="text">
         <?php
         return ob_get_clean();
     }

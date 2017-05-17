@@ -18,8 +18,8 @@ class Footer
      * Hook this to wp_footer
      * @return void
      */
-    public function honeypot() {
-        if (false === $this->allowed) return;
+    public function honeypot($allowed) {
+        if (false === $allowed) return;
         ob_start();
         ?>
         <script type="text/javascript">

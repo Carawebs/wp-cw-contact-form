@@ -24,13 +24,16 @@ class FieldBuilder extends FieldMarkup
         foreach ($this->formFields->container as $key => $args) {
             switch ($args['type']) {
                 case 'text':
-                $this->fieldsMarkupArray['text'] = $this->text($args);
+                $this->fieldsMarkupArray[] = $this->text($args);
+                break;
+                case 'email':
+                $this->fieldsMarkupArray[] = $this->text($args);
                 break;
                 case 'textarea':
-                $this->fieldsMarkupArray['textarea'] = $this->textarea($args);
+                $this->fieldsMarkupArray[] = $this->textarea($args);
                 break;
                 case 'radio':
-                $this->fieldsMarkupArray['radio'] = $this->radios($args);
+                $this->fieldsMarkupArray[] = $this->radios($args);
                 break;
                 default:
                 # code...

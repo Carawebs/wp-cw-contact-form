@@ -24,7 +24,11 @@ class FormOutput
         add_action('carawebs\email-contact-form', function() {
             $nonce = $this->baseFormValues->getNonce();
             $honeypot = $this->baseFormValues->getHoneypot();
+            $postToUrl = get_the_permalink();
             ob_start();
+            // if (!empty($_SESSION['formErrors'])) {
+            //     include($this->static_partial_selector('partials/forms/form-errors'));
+            // }
             include($this->static_partial_selector('partials/forms/contact-form'));
             echo ob_get_clean();
         });
