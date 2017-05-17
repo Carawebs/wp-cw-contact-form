@@ -16,6 +16,7 @@ namespace Carawebs\ContactForm;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $basePath = dirname(__FILE__);
+$namePrefix = "carawebs_";
 include __DIR__ . '/src/Plugin.php';
-$plugin = new Plugin($basePath);
+$plugin = new Plugin($basePath, $namePrefix);
 $plugin->init();

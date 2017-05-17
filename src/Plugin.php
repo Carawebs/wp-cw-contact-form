@@ -21,9 +21,10 @@ class Plugin
 {
     private $config;
 
-    public function __construct($basePath)
+    public function __construct($basePath, $namePrefix)
     {
         $this->basePath = $basePath;
+        $this->namePrefix = $namePrefix;
         $this->initialiseObjects();
     }
 
@@ -35,14 +36,13 @@ class Plugin
     {
         add_action('wp', function() {
             // Object to set nonce vals & honeypot name - these passed to form output & processor.
-            $baseFormValues = new BaseFormValues;
+            $baseFormValues = new BaseFormValues($this->namePrefix);
             $this->settingsController = new Settings\SettingsController;
             $this->registerShortcodes = new RegisterShortcodes;
             $this->messageConfig = new FileMessageConfig($this->basePath . '/config/message.php');
             $this->allowedLocationsConfig = new FileAllowedLocationsConfig($this->basePath . '/config/allowed-locations.php');
             $this->formFieldsConfig = new FileFormFieldsConfig($this->basePath . '/config/form-fields.php');
-            // An array of field data
-            $this->formFieldsData = new FieldBuilder($this->formFieldsConfig);
+            $this->formFieldsData = new FieldBuilder($this->formFieldsConfig, $this->namePrefix);
             $this->contactForm = new FormOutput($baseFormValues, $this->formFieldsData);
             $this->formProcessor = new Processor($baseFormValues, $this->formFieldsData);
             $this->autoloader = new Autoloader;

@@ -9,34 +9,70 @@ abstract class FieldMarkup
 
     public function text($args)
     {
-        $placeholder = !empty($args['placeholder']) ? ' placeholder="' . $args['placeholder'] . '"' : NULL;
-        $required = !empty($args['required']) ? ' required' : NULL;
-        $label = !empty($args['label']) ? $args['label'] : NULL;
+        $args = $this->fieldArgs($args);
         ob_start();
         ?>
-        <?php if(!empty($label)) : ?>
-            <label for="<?= $args['name']; ?>"><?= $label; ?></label>
+        <?php if(!empty($args['label'])) : ?>
+            <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
         <?php endif; ?>
-        <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>"<?= $placeholder; ?>" class="form-control<?= $required; ?>"<?=$required; ?> type="text">
+        <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>"<?= $args['placeholder']; ?> class="form-control<?= $args['required']; ?>"<?=$args['required']; ?> type="text">
         <?php
+        $this->required($args);
         return ob_get_clean();
     }
+
+    /**
+     * [required description]
+     * @param [type] $args [description]
+     */
+    private function required($args)
+    {
+        if(!empty($args['required'])) {
+            ob_start();
+            ?>
+            <small id="<?= $args['name']; ?>-help" class="text-muted">
+                This Field is Required.
+            </small>
+            <?php
+            echo ob_get_clean();
+        }
+        return;
+    }
+
 
     public function textarea($args)
     {
         $rows = !empty($args['rows']) ? $args['rows'] : '5';
-        $placeholder = !empty($args['placeholder']) ? $args['placeholder'] : NULL;
+        $args = $this->fieldArgs($args);
 
         ob_start();
         ?>
-        <textarea class="form-control" id="textarea" name="<?= $args['name']; ?>" rows="<?= $rows; ?>"><?= $placeholder; ?></textarea>
+        <?php if(!empty($args['label'])) : ?>
+            <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
+        <?php endif; ?>
+        <textarea class="form-control" id="textarea" name="<?= $args['name']; ?>" rows="<?= $rows; ?>"<?= $args['placeholder']; ?>></textarea>
         <?php
+        $this->required($args);
+        return ob_get_clean();
+    }
+
+    public function tel($args)
+    {
+        $args = $this->fieldArgs($args);
+        ob_start();
+        ?>
+        <?php if(!empty($args['label'])) : ?>
+            <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
+        <?php endif; ?>
+        <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>" class="form-control<?= $args['required']; ?>"<?= $args['required']; ?> type="tel">
+        <?php
+        $this->required($args);
         return ob_get_clean();
     }
 
     public function radios($args)
     {
-
+        $args = array_merge($this->fieldArgs($args));
         ob_start();
         $i = 0;
         foreach ($args['options'] as $value => $displayValue) {
@@ -50,6 +86,7 @@ abstract class FieldMarkup
             <?php
             $i++;
         }
+        $this->required($args);
         return ob_get_clean();
     }
 
@@ -57,5 +94,30 @@ abstract class FieldMarkup
     {
         $str = strtolower(trim($name));
         return str_replace('_', '-', $str) . '-' . $i;
+    }
+
+    public function heading($args)
+    {
+        $label = !empty($args['label']) ? $args['label'] : NULL;
+        return "<h3>$label</h3>";
+    }
+
+    public function paragraph($args)
+    {
+        $label = !empty($args['label']) ? $args['label'] : NULL;
+        return "<p class='form-control-static'>$label</p>";
+    }
+
+    /**
+    * Set field arguments
+    * @param array $args Raw field arguments
+    */
+    private function fieldArgs($args)
+    {
+        $args['placeholder'] = !empty($args['placeholder']) ? ' placeholder="' . $args['placeholder'] . '"' : NULL;
+        $args['required'] = !empty($args['required']) ? ' required' : NULL;
+        $args['label'] = !empty($args['label']) ? $args['label'] : NULL;
+        $args['name'] = $this->namePrefix . $args['name'];
+        return $args;
     }
 }

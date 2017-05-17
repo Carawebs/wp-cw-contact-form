@@ -17,10 +17,13 @@ class BaseFormValues
 
     private $honeypot;
 
-    function __construct()
+    private $namePrefix;
+
+    function __construct($namePrefix)
     {
         $this->setNonce();
         $this->setHoneypot();
+        $this->namePrefix = $namePrefix;
     }
 
     private function setNonce()
@@ -63,5 +66,10 @@ class BaseFormValues
     public function getHoneypotName()
     {
         return $this->honeypotName;
+    }
+
+    public function getNamePrefix()
+    {
+        return $this->namePrefix;
     }
 }

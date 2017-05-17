@@ -11,19 +11,19 @@ abstract class Validator
     public function validator($invalidInput)
     {
         $errors = [];
-        $ourFormFieldData = [];
         foreach ($invalidInput as $name => $value) {
-            if (!in_array($name, array_keys($this->formFields))) continue;
-            $type = $this->formFields[$name]['type'];
-            $ourFormFieldData[$name] = [$value, $type];
+            $unprefixedName = str_replace($this->namePrefix, '', $name);
+            if (!in_array($unprefixedName, array_keys($this->formFields))) continue;
+            $type = $this->formFields[$unprefixedName]['type'];
+            $label = $this->formFields[$unprefixedName]['label'];
             if ('text' === $type) {
                 if (empty($value)) {
-                    $errors[] = "Please enter a value for $name";
+                    $errors[] = "Please enter a value for $label";
                 }
             }
             if ('textarea' === $type) {
                 if (empty($value)) {
-                    $errors[] = "Please enter a value for $name";
+                    $errors[] = "Please enter a value for $label";
                 }
             }
             // if ('email' === $type) {
@@ -35,4 +35,31 @@ abstract class Validator
         return $errors;
     }
 
+    public function sanitize($unsanitizedData)
+    {
+        $sane = [];
+        foreach ($unsanitizedData as $name => $value) {
+            $unprefixedName = str_replace($this->namePrefix, '', $name);
+            if (!in_array($unprefixedName, array_keys($this->formFields))) continue;
+            $type = $this->formFields[$unprefixedName]['type'];
+            $this->logger($this->formFields[$unprefixedName]);
+            $niceName = !empty($this->formFields[$unprefixedName]['nice_name'])
+                ? $this->formFields[$unprefixedName]['nice_name']
+                : $this->formFields[$unprefixedName]['name'];
+
+            if ('email' === $type) {
+                $sane[$niceName] = sanitize_email($value);
+            }
+            if ('text' === $type) {
+                $sane[$niceName] = sanitize_text_field($value);
+            }
+            if ('radio' === $type) {
+                $sane[$niceName] = sanitize_text_field($value);
+            }
+            if ('textarea' === $type) {
+                $sane[$niceName] = sanitize_text_field($value);
+            }
+        }
+        return $sane;
+    }
 }

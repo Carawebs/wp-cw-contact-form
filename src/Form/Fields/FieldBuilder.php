@@ -4,17 +4,18 @@ namespace Carawebs\ContactForm\Form\Fields;
 use Carawebs\ContactForm\Config\FileFormFieldsConfig;
 
 /**
- *
- */
+*
+*/
 class FieldBuilder extends FieldMarkup
 {
     private $formFields;
 
     private $fieldsMarkupArray;
 
-    function __construct(FileFormFieldsConfig $formFieldsConfig)
+    function __construct(FileFormFieldsConfig $formFieldsConfig, $namePrefix)
     {
         $this->formFields = $formFieldsConfig;
+        $this->namePrefix = $namePrefix;
         $this->buildFields();
     }
 
@@ -32,11 +33,19 @@ class FieldBuilder extends FieldMarkup
                 case 'textarea':
                 $this->fieldsMarkupArray[] = $this->textarea($args);
                 break;
+                case 'tel':
+                $this->fieldsMarkupArray[] = $this->tel($args);
+                break;
                 case 'radio':
                 $this->fieldsMarkupArray[] = $this->radios($args);
                 break;
+                case 'heading':
+                $this->fieldsMarkupArray[] = $this->heading($args);
+                break;
+                case 'paragraph':
+                $this->fieldsMarkupArray[] = $this->paragraph($args);
+                break;
                 default:
-                # code...
                 break;
             }
         }
