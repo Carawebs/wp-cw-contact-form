@@ -51,7 +51,7 @@ class BaseFormValues
         ob_start();
         ?>
         <div class="form-group" style="display:none;">
-            <label>Keep this field blank</label>
+            <label>Enter here</label>
             <input class="form-control" type="text" name="<?= $this->honeypotName; ?>" id="<?= $this->honeypotName; ?>" />
         </div>
         <?php

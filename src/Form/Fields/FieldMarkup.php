@@ -74,6 +74,7 @@ abstract class FieldMarkup
         $args = array_merge($this->fieldArgs($args));
         ob_start();
         $i = 0;
+        echo "<fieldset><label>{$args['label']}</label>";
         foreach ($args['options'] as $value => $displayValue) {
             ?>
             <div class="form-check">
@@ -85,6 +86,7 @@ abstract class FieldMarkup
             <?php
             $i++;
         }
+        echo "</fieldset>";
         $this->required($args);
         return ob_get_clean();
     }
