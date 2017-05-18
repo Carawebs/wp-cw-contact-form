@@ -42,9 +42,8 @@ class Processor extends Validator
         $sane = $this->sanitize($_POST);
 
         $IP = $_SERVER['REMOTE_ADDR'];
-        // $to = $this->messageConfig['email'];
         $to = $this->sendToEmail;
-        $this->logger($to);
+        //$this->logger($to);
         $subject = $this->messageConfig['subject'];
         $body = $this->message($sane, $IP);
         $headers = ['Content-Type: text/html; charset=UTF-8'];
