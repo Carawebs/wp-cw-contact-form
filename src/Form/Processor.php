@@ -16,7 +16,6 @@ class Processor extends Validator
         $this->nonceAction = $baseFormValues->getNonceAction();
         $this->formFields = $formFields->getFieldsData()->container;
         $this->namePrefix = $baseFormValues->getNamePrefix();
-        //$this->logger($this->formFields);
     }
 
     public function processSubmittedForm($allowed)
@@ -28,8 +27,6 @@ class Processor extends Validator
             return;
         }
         if (!empty($_POST[$this->honeypotName])) {
-            $_SESSION['formErrors'][] = 'Problem with honeypot';
-            //$this->logger('honeypot');
             return;
         }
         if (false === $this->checkNonce($_POST[$this->nonceName], $this->nonceAction)) {
@@ -51,12 +48,11 @@ class Processor extends Validator
         $headers = ['Content-Type: text/html; charset=UTF-8'];
         $headers[] = 'From: ' . $this->messageConfig['header-from'] . ' <'. $this->messageConfig['email'] . '>';
         $log = [];
-        $log['sanitized_data'] = $sane;
+        //$log['sanitized_data'] = $sane;
         $log['headers'] = $headers;
         $log['body'] = $body;
         file_put_contents(dirname(__FILE__, 3). '/maillog', json_encode($log, JSON_PRETTY_PRINT));
         wp_mail($to, $subject, $body, $headers);
-        // wp_redirect(home_url('/thank-you') . '?firstname=' . $sane['first_name']);
         wp_redirect(home_url('/thank-you'));
         exit;
     }
