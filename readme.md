@@ -1,6 +1,6 @@
 Simple Email Contact Form
 =========================
-Brand new project - in development. Don't use in production!
+Brand new project - in development. Use at your own risk!
 
 ## Resources
 
