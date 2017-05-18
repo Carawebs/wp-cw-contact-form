@@ -42,16 +42,14 @@ class Processor extends Validator
         $sane = $this->sanitize($_POST);
 
         $IP = $_SERVER['REMOTE_ADDR'];
-        $to = $this->messageConfig['email'];
+        // $to = $this->messageConfig['email'];
+        $to = $this->sendToEmail;
+        $this->logger($to);
         $subject = $this->messageConfig['subject'];
         $body = $this->message($sane, $IP);
         $headers = ['Content-Type: text/html; charset=UTF-8'];
         $headers[] = 'From: ' . $this->messageConfig['header-from'] . ' <'. $this->messageConfig['email'] . '>';
-        $log = [];
-        //$log['sanitized_data'] = $sane;
-        $log['headers'] = $headers;
-        $log['body'] = $body;
-        file_put_contents(dirname(__FILE__, 3). '/maillog', json_encode($log, JSON_PRETTY_PRINT));
+
         wp_mail($to, $subject, $body, $headers);
         wp_redirect(home_url('/thank-you'));
         exit;
@@ -83,9 +81,28 @@ class Processor extends Validator
         return ob_get_clean();
     }
 
+    /**
+     * Set the destination email address.
+     *
+     * At the moment, precedence is given to the value set in the database, and the retrieval
+     * of this is hardcoded into `get_option()`.
+     *
+     * @TODO Set the database option centrally - accessible to both the settings config
+     * and this method.
+     * @TODO When a DI container is added, the config object shoutl be type-hinted to an interface,
+     * allowing easy swapping of the config.
+     *
+     * @param Object $config Settings config object
+     */
     public function setMessageConfig($config)
     {
         $this->messageConfig = $config;
+        // Give preference to the email address in Database
+        if (!empty($email = get_option('carawebs_contact_form')['destination_email'])) {
+            $this->sendToEmail = $email;
+        } else {
+            $this->sendToEmail = $config->getSendToEmailAddress();
+        }
     }
 
     public function checkNonce($nonce, $nonce_action)

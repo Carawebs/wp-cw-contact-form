@@ -21,8 +21,8 @@ class FileMessageConfig extends BaseArrayAccess implements MessageConfig
         $this->container = include($configFile);
     }
 
-    public function getSentToEmailAddress()
+    public function getSendToEmailAddress()
     {
-        return $this->config['email'];
+        return $this->container['email'];
     }
 }

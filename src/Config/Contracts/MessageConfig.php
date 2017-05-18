@@ -6,5 +6,5 @@ namespace Carawebs\ContactForm\Config\Contracts;
 */
 interface MessageConfig
 {
-    public function getSentToEmailAddress();
+    public function getSendToEmailAddress();
 }
