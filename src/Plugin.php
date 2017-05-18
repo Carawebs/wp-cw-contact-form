@@ -32,12 +32,12 @@ class Plugin
     public function setPaths($basePath)
     {
         $this->basePath = $basePath;
-        $this->settingsConfigFilePath = $this->basePath . '/config/options-page.php';
-        $this->formFieldsConfig = new FileFormFieldsConfig($this->basePath . '/config/form-fields.php');
-        $this->messageConfigPath = $this->basePath . '/config/message.php';
+        $this->settingsConfigFilePath = $this->basePath . '/config/form-config/options-page.php';
+        $this->formFieldsConfig = new FileFormFieldsConfig($this->basePath . '/config/form-config/form-fields.php');
+        $this->messageConfigPath = $this->basePath . '/config/form-config/message.php';
 
         add_action('wp', function() use ($basePath){
-            $this->allowedLocationsConfig = new FileAllowedLocationsConfig($this->basePath . '/config/allowed-locations.php');
+            $this->allowedLocationsConfig = new FileAllowedLocationsConfig($this->basePath . '/config/form-config/allowed-locations.php');
         });
     }
 
