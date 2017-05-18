@@ -13,7 +13,7 @@ Domain Path:       /languages
 */
 namespace Carawebs\ContactForm;
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) exit;
 
 $basePath = dirname(__FILE__);
 $namePrefix = "carawebs_";

@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) exit;
 return [
     'type' => 'options_page',
     'setting' => [
@@ -15,13 +15,13 @@ return [
     ],
     'sections' => [
         [
-            'tab' => 'Main',
+            'tab' => 'Form Email Options',
             'is_tab' => true,
-            'option_name' => 'carawebs_contact_fields',
-            'option_group' => 'main',
-            'id' => 'main',
-            'title' => 'Form Fields',
-            'description' => 'This is the main section.',
+            'option_name' => 'carawebs_contact_form',
+            'option_group' => 'form-email-options',// At the moment, this MUST be the slugified 'tab' value @TODO Fix this!!
+            'id' => 'form-email-options',
+            'title' => 'Email Contact Form',
+            'description' => 'Options for the contact form.',
             'fields' =>[
                 [
                     'type' => 'text',
@@ -29,38 +29,7 @@ return [
                     'title' => 'Destination Email',
                     'default' => NULL,
                 ],
-                [
-                    'type' => 'text',
-                    'name' => 'line_1',
-                    'title' => 'Address Line One',
-                    'default' => NULL,
-                    'placeholder' => 'Type here'
-                ]
             ]
-        ],
-        [
-            'tab' => 'Social Media',
-            'option_name' => 'carawebs_social',
-            'option_group' => 'social-media', // At the moment, this MUST be the slugified 'tab' value @TODO Fix this!!
-            'id' => 'social-media',
-            'title' => 'Social Media',
-            'description' => 'The social stuff.',
-            'fields' =>[
-                [
-                    'type' => 'text',
-                    'name' => 'facebook',
-                    'title' => 'Facebook',
-                    'desc' => 'Enter the URL of your Facebook page',
-                    'placeholder' => ''
-                ],
-                [
-                    'type' => 'text',
-                    'name' => 'twitter',
-                    'title' => 'Twitter',
-                    'desc' => 'Enter the URL of your Twitter page',
-                    'placeholder' => ''
-                ]
-            ],
         ],
     ]
 ];
