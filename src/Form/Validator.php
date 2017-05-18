@@ -29,6 +29,11 @@ abstract class Validator
                     $errors[] = "Please enter a value for $label";
                 }
             }
+            if ('radio' === $type) {
+                if (empty($value) && $required) {
+                    $errors[] = "Please enter a value for $label";
+                }
+            }
             if ('email' === $type) {
                 if (empty($value) && $required) {
                     $errors[] = "Please enter a value for $label";
@@ -67,7 +72,7 @@ abstract class Validator
                 $sane[$niceName] = sanitize_text_field($value);
             }
         }
-        
+
         return $sane;
     }
 }
