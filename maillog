@@ -1,13 +1,14 @@
 {
     "sanitized_data": {
-        "The person's name": "David Egan",
-        "The company": "Carawebs",
-        "position": "Main Monkey",
-        "email": "monkey@carawebs.com"
+        "Name": "David Egan",
+        "Email": "david@carawebs.com",
+        "Company": "Carawebs",
+        "Position": "Boss",
+        "About": "Client"
     },
     "headers": [
         "Content-Type: text\/html; charset=UTF-8",
         "From: Get it Right Initiative <info@carawebs.com>"
     ],
-    "body": "        <h1>Form Submission from http:\/\/giri.dev\/<\/h1>\n        <p>IP Address: 127.0.0.1<\/p>\n        <ul><li>The person's name: David Egan<\/li><li>The company: Carawebs<\/li><li>position: Main Monkey<\/li><li>email: <a href='mailto:monkey@carawebs.com'>monkey@carawebs.com<\/a><\/li><\/ul>        "
+    "body": "        <h1>Form Submission<\/h1>\n        <p>from http:\/\/giri.dev\/<\/p>\n        <ul><li>Name: David Egan<\/li><li>Email: david@carawebs.com<\/li><li>Company: Carawebs<\/li><li>Position: Boss<\/li><li>About: Client<\/li><li>IP Address: 127.0.0.1<\/li><\/ul>        "
 }

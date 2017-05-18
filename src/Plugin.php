@@ -7,6 +7,7 @@ use Carawebs\ContactForm\Scripts\Footer;
 use Carawebs\ContactForm\Form\FormOutput;
 use Carawebs\ContactForm\Config\MessageConfig;
 use Carawebs\ContactForm\Config\BaseFormValues;
+use Carawebs\ContactForm\Widgets\RegisterWidgets;
 use Carawebs\ContactForm\Form\Fields\FieldBuilder;
 use Carawebs\ContactForm\Config\FileMessageConfig;
 use Carawebs\ContactForm\Config\FileFormFieldsConfig;
@@ -48,6 +49,9 @@ class Plugin
             $this->autoloader = new Autoloader;
             $this->settingsConfigFilePath = $this->basePath . '/config/options-page.php';
             $this->footerScripts = new Footer($baseFormValues);
+        });
+        add_action('after_setup_theme', function() {
+            new RegisterWidgets;
         });
     }
 

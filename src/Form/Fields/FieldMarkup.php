@@ -15,9 +15,9 @@ abstract class FieldMarkup
         <?php if(!empty($args['label'])) : ?>
             <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
         <?php endif; ?>
+        <?php $this->required($args); ?>
         <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>"<?= $args['placeholder']; ?> class="form-control<?= $args['required']; ?>"<?=$args['required']; ?> type="text">
         <?php
-        $this->required($args);
         return ob_get_clean();
     }
 
@@ -30,9 +30,7 @@ abstract class FieldMarkup
         if(!empty($args['required'])) {
             ob_start();
             ?>
-            <small id="<?= $args['name']; ?>-help" class="text-muted">
-                This Field is Required.
-            </small>
+            <small id="<?= $args['name']; ?>-help" class="text-muted"> (Required)</small>
             <?php
             echo ob_get_clean();
         }
@@ -50,6 +48,7 @@ abstract class FieldMarkup
         <?php if(!empty($args['label'])) : ?>
             <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
         <?php endif; ?>
+        <?php $this->required($args); ?>
         <textarea class="form-control" id="textarea" name="<?= $args['name']; ?>" rows="<?= $rows; ?>"<?= $args['placeholder']; ?>></textarea>
         <?php
         $this->required($args);

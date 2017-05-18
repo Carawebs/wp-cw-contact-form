@@ -21,11 +21,7 @@ class EmailContactForm implements Shortcode
 
         ?>
         <div class="carawebs-contact-form">
-            <h2>Form goes here</h2>
-            <?php
-            do_action('carawebs\email-contact-form');
-            //include $this->partial_selector( 'share-this');
-            ?>
+            <?php do_action('carawebs\email-contact-form'); ?>
         </div>
         <?php
         return ob_get_clean();

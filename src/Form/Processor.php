@@ -43,8 +43,6 @@ class Processor extends Validator
         }
 
         $sane = $this->sanitize($_POST);
-        // $this->logger(['insane data' => $_POST]);
-        // $this->logger(['sane data' => $sane]);
 
         $IP = $_SERVER['REMOTE_ADDR'];
         $to = $this->messageConfig['email'];
@@ -58,7 +56,8 @@ class Processor extends Validator
         $log['body'] = $body;
         file_put_contents(dirname(__FILE__, 3). '/maillog', json_encode($log, JSON_PRETTY_PRINT));
         wp_mail($to, $subject, $body, $headers);
-        wp_redirect(home_url('/thank-you') . '?firstname=' . $sane['first_name']);
+        // wp_redirect(home_url('/thank-you') . '?firstname=' . $sane['first_name']);
+        wp_redirect(home_url('/thank-you'));
         exit;
     }
 
@@ -72,16 +71,17 @@ class Processor extends Validator
 
     public function message($formData, $IP = NULL)
     {
-        $result = '<ul>';
+        $result = "<ul>";
         foreach ($formData as $name => $value) {
             $value = 'email' === $name ? "<a href='mailto:$value'>$value</a>" : $value;
             $result .= '<li>' . $name . ': ' . $value . '</li>';
         }
-        $result .= '</ul>';
+        $result .= "<li>IP Address of this person: $IP</li>";
+        $result .= "</ul>";
         ob_start();
         ?>
-        <h1>Form Submission from <?= esc_html(home_url('/')); ?></h1>
-        <p>IP Address: <?= $IP; ?></p>
+        <h1>Form Submission</h1>
+        <p>from <?= esc_html(home_url('/')); ?></p>
         <?= $result; ?>
         <?php
         return ob_get_clean();
