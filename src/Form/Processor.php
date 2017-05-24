@@ -46,7 +46,7 @@ class Processor extends Validator
         $subject = $this->messageConfig['subject'];
         $body = $this->message($sane, $IP);
         $headers = ['Content-Type: text/html; charset=UTF-8'];
-        $headers[] = 'From: ' . $this->messageConfig['header-from'] . ' <'. $this->messageConfig['email'] . '>';
+        $headers[] = 'From: ' . $this->messageConfig['header-from'] . ' <'. $this->emailFrom . '>';
 
         wp_mail($to, $subject, $body, $headers);
         wp_redirect(home_url('/thank-you'));
@@ -97,10 +97,19 @@ class Processor extends Validator
         $this->messageConfig = $config;
         // Give preference to the email address in Database
         $email = get_option('carawebs_contact_form')['destination_email'];
+        $emailFrom = !empty(get_option('carawebs_contact_form')['email_from'])
+            ? get_option('carawebs_contact_form')['email_from']
+            : NULL;
         if (!empty($email)) {
             $this->sendToEmail = $email;
         } else {
             $this->sendToEmail = $config->getSendToEmailAddress();
+        }
+
+        if (!empty($emailFrom)) {
+            $this->emailFrom = $emailFrom;
+        } else {
+            $this->emailFrom = $config['email_from'];
         }
     }
 
