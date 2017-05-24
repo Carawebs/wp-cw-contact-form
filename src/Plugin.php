@@ -43,7 +43,6 @@ class Plugin
         }
         $this->basePath = $basePath;
         $this->settingsConfigFilePath = $this->basePath . '/config/form-config/options-page.php';
-        echo $this->settingsConfigFilePath;
         $this->formFieldsConfig = new FileFormFieldsConfig($this->basePath . '/config/form-config/form-fields.php');
         $this->messageConfigPath = $this->basePath . '/config/form-config/message.php';
 
@@ -87,7 +86,6 @@ class Plugin
         if (true === $this->bail) return;
 
         $this->settingsController->setOptionsPageArgs($this->settingsConfigFilePath)->initOptionsPage();
-        var_dump($this->settingsController);
         add_action('wp', function() {
             $allowed = $this->allowedLocationsConfig->allowed();
             $this->formProcessor->setMessageConfig($this->messageConfig);
