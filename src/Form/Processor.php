@@ -43,7 +43,6 @@ class Processor extends Validator
 
         $IP = $_SERVER['REMOTE_ADDR'];
         $to = $this->sendToEmail;
-        //$this->logger($to);
         $subject = $this->messageConfig['subject'];
         $body = $this->message($sane, $IP);
         $headers = ['Content-Type: text/html; charset=UTF-8'];
@@ -97,7 +96,8 @@ class Processor extends Validator
     {
         $this->messageConfig = $config;
         // Give preference to the email address in Database
-        if (!empty($email = get_option('carawebs_contact_form')['destination_email'])) {
+        $email = get_option('carawebs_contact_form')['destination_email'];
+        if (!empty($email)) {
             $this->sendToEmail = $email;
         } else {
             $this->sendToEmail = $config->getSendToEmailAddress();

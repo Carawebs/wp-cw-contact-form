@@ -22,15 +22,25 @@ class Plugin
 {
     private $config;
 
+    private $bail = false;
+
     public function __construct($basePath, $namePrefix)
     {
-        $this->setPaths($basePath);
-        $this->namePrefix = $namePrefix;
-        $this->initialiseObjects();
+        $continue = $this->setPaths($basePath);
+
+        if (true === $continue) {
+            $this->namePrefix = $namePrefix;
+            $this->initialiseObjects();
+        } else {
+            $this->bail = true;
+        }
     }
 
     public function setPaths($basePath)
     {
+        if (!file_exists($basePath . '/config/form-config/form-fields.php')) {
+            return false;
+        }
         $this->basePath = $basePath;
         $this->settingsConfigFilePath = $this->basePath . '/config/form-config/options-page.php';
         $this->formFieldsConfig = new FileFormFieldsConfig($this->basePath . '/config/form-config/form-fields.php');
@@ -39,6 +49,8 @@ class Plugin
         add_action('wp', function() use ($basePath){
             $this->allowedLocationsConfig = new FileAllowedLocationsConfig($this->basePath . '/config/form-config/allowed-locations.php');
         });
+
+        return true;
     }
 
     /**
@@ -46,6 +58,8 @@ class Plugin
      */
     private function initialiseObjects()
     {
+        if (true === $this->bail) return;
+
         $this->settingsController = new Settings\SettingsController;
 
         add_action('wp', function() {
@@ -69,6 +83,8 @@ class Plugin
 
     public function init()
     {
+        if (true === $this->bail) return;
+
         $this->settingsController->setOptionsPageArgs($this->settingsConfigFilePath)->initOptionsPage();
         add_action('wp', function() {
             $allowed = $this->allowedLocationsConfig->allowed();

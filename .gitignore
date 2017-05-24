@@ -3,4 +3,5 @@
 vendor
 config/*
 !config/.gitkeep
+!config/form-config
 !config/form-config/.gitkeep
