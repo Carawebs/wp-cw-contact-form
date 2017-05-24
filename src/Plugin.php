@@ -38,6 +38,7 @@ class Plugin
 
     public function setPaths($basePath)
     {
+        echo $basePath;
         if (!file_exists($basePath . '/config/form-config/form-fields.php')) {
             return false;
         }
