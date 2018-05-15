@@ -33,7 +33,6 @@ class Processor extends Validator
         if (false === $this->checkNonce($_POST[$this->nonceName], $this->nonceAction)) {
             return;
         }
-
         $errors = $this->validator($_POST);
         if (!empty($errors)) {
             $_SESSION['formErrors'] = $errors;

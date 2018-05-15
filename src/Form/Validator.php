@@ -12,6 +12,7 @@ abstract class Validator
     {
         $errors = [];
         foreach ($invalidInput as $name => $value) {
+            $this->logger($name);
             $unprefixedName = str_replace($this->namePrefix, '', $name);
             if (!in_array($unprefixedName, array_keys($this->formFields))) continue;
 
@@ -31,6 +32,11 @@ abstract class Validator
             }
             if ('radio' === $type) {
                 if (empty($value) && $required) {
+                    $errors[] = "Please enter a value for $label";
+                }
+            }
+            if ('checkbox' === $type) {
+                if ($value!= "on" && $required) {
                     $errors[] = "Please enter a value for $label";
                 }
             }
@@ -72,7 +78,6 @@ abstract class Validator
                 $sane[$niceName] = sanitize_text_field($value);
             }
         }
-
         return $sane;
     }
 }
