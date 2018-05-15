@@ -50,6 +50,5 @@ $fields = [
         'required' => true,
         'class' => 'top-border',
         'extra_html' => "<p class='small'>This form collects your details so that we can contact you to give you information on becoming a member of the Get it Right Initiative. For more information on how we use and store your details please visit our <a href='$privacyPage'>privacy page</a></p>"
-    ]
 ];
 return $fields;
