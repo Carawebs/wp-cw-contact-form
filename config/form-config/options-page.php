@@ -29,6 +29,16 @@ return [
                     'title' => 'Destination Email',
                     'default' => NULL,
                 ],
+                // [
+                //     'type' => 'select',
+                //     'name' => 'collect_ip',
+                //     'title' => 'Collect IP Address',
+                //     'default' => 0,
+                //     'multi_options' => [
+                //         'Collect IP addresses' => 1,
+                //         'Do Not Collect IP addresses' => 0
+                //     ]
+                // ],
             ]
         ],
     ]

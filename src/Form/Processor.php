@@ -9,13 +9,14 @@ use Carawebs\ContactForm\Form\Fields\FieldBuilder;
 */
 class Processor extends Validator
 {
-    public function __construct(BaseFormValues $baseFormValues, FieldBuilder $formFields)
+    public function __construct(BaseFormValues $baseFormValues, FieldBuilder $formFields, $collectIP = false)
     {
         $this->honeypotName = $baseFormValues->getHoneypotName();
         $this->nonceName = $baseFormValues->getNonceName();
         $this->nonceAction = $baseFormValues->getNonceAction();
         $this->formFields = $formFields->getFieldsData()->container;
         $this->namePrefix = $baseFormValues->getNamePrefix();
+        $this->collectIP = $collectIP;
     }
 
     public function processSubmittedForm($allowed)
@@ -41,7 +42,7 @@ class Processor extends Validator
 
         $sane = $this->sanitize($_POST);
 
-        $IP = $_SERVER['REMOTE_ADDR'];
+        $IP = $this->collectIP ? $_SERVER['REMOTE_ADDR'] : 'IP not collected.';
         $to = $this->sendToEmail;
         $subject = $this->messageConfig['subject'];
         $body = $this->message($sane, $IP);

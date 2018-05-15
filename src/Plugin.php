@@ -20,8 +20,8 @@ if (!defined('ABSPATH')) exit;
 */
 class Plugin
 {
+    private $collectIP = false;
     private $config;
-
     private $bail = false;
 
     public function __construct($basePath, $namePrefix)
@@ -69,7 +69,7 @@ class Plugin
             $this->messageConfig = new FileMessageConfig($this->messageConfigPath);
             $this->formFieldsData = new FieldBuilder($this->formFieldsConfig, $this->namePrefix);
             $this->contactForm = new FormOutput($baseFormValues, $this->formFieldsData);
-            $this->formProcessor = new Processor($baseFormValues, $this->formFieldsData);
+            $this->formProcessor = new Processor($baseFormValues, $this->formFieldsData, $this->collectIP);
             $this->autoloader = new Autoloader;
             $this->footerScripts = new Footer($baseFormValues);
         });

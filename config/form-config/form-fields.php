@@ -1,5 +1,6 @@
 <?php
 if (!defined('ABSPATH')) exit;
+$includeIP = false;
 $privacyPage = esc_url(home_url('/privacy'));
 $fields = [
     'name' => [
@@ -34,7 +35,6 @@ $fields = [
         'nice_name' => 'Person\'s interest',
         'type' => 'radio',
         'options'=> [
-            // $value => $label
             'Client'   => 'Client',
             'Consultant' => 'Consultant',
             'Main Contractor' => 'Main Contractor',
@@ -50,10 +50,6 @@ $fields = [
         'required' => true,
         'class' => 'top-border',
         'extra_html' => "<p class='small'>This form collects your details so that we can contact you to give you information on becoming a member of the Get it Right Initiative. For more information on how we use and store your details please visit our <a href='$privacyPage'>privacy page</a></p>"
-    ],
-    // 'info' => [
-    //     'label' => 'See our full <a href="/privacy">privacy statement</a>...',
-    //     'type' => 'paragraph'
-    // ]
+    ]
 ];
 return $fields;
