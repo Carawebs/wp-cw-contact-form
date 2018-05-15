@@ -2,5 +2,6 @@
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
 vendor
 config/*
+config/form-config/*
 !config/.gitkeep
 !config/form-config/.gitkeep
