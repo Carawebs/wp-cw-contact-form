@@ -12,11 +12,27 @@ abstract class FieldMarkup
         $args = $this->fieldArgs($args);
         ob_start();
         ?>
-        <?php if(!empty($args['label'])) : ?>
+        <?php if(!empty($args['label'])): ?>
             <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
         <?php endif; ?>
         <?php $this->required($args); ?>
         <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>"<?= $args['placeholder']; ?> class="form-control<?= $args['required']; ?>"<?=$args['required']; ?> type="text">
+        <?php
+        return ob_get_clean();
+    }
+
+    public function checkbox($args)
+    {
+        $args = $this->fieldArgs($args);
+        $class = !empty($args['class']) ? "form-checkbox" . " " . $args['class'] : "form-checkbox";
+        ob_start();
+        ?>
+        <?php if(!empty($args['label'])): ?>
+            <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
+        <?php endif; ?>
+        <?php $this->required($args); ?><br>
+        <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>" class="<?= $class; ?>"<?= $args['required']; ?> type="checkbox">
+        <?= !empty($args['extra_html']) ? $args['extra_html'] : NULL ?>
         <?php
         return ob_get_clean();
     }
@@ -45,7 +61,7 @@ abstract class FieldMarkup
 
         ob_start();
         ?>
-        <?php if(!empty($args['label'])) : ?>
+        <?php if(!empty($args['label'])): ?>
             <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
         <?php endif; ?>
         <?php $this->required($args); ?>
@@ -60,7 +76,7 @@ abstract class FieldMarkup
         $args = $this->fieldArgs($args);
         ob_start();
         ?>
-        <?php if(!empty($args['label'])) : ?>
+        <?php if(!empty($args['label'])): ?>
             <label for="<?= $args['name']; ?>"><?= $args['label']; ?></label>
         <?php endif; ?>
         <input name="<?= $args['name']; ?>" id="<?= $args['name']; ?>" class="form-control<?= $args['required']; ?>"<?= $args['required']; ?> type="tel">
